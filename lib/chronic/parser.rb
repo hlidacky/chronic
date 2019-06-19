@@ -1,5 +1,6 @@
 require 'chronic/dictionary'
 require 'chronic/handlers'
+require 'active_support/inflector'
 
 module Chronic
   class Parser
@@ -110,6 +111,7 @@ module Chronic
           number
         end
       end
+      text = ::ActiveSupport::Inflector.transliterate(text) # remove accents
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
@@ -124,11 +126,27 @@ module Chronic
       text.gsub!(/\btoday\b/, 'this day')
       text.gsub!(/\bdnes\b/, 'this day') # czech
       text.gsub!(/\bdneska\b/, 'this day') # czech
-      text.gsub!(/\ddnešek\b/, 'this day') # czech
-      text.gsub!(/\ddnesek\b/, 'this day') # czech
+      text.gsub!(/\bdnesek\b/, 'this day') # czech
       text.gsub!(/\btomm?orr?ow\b/, 'next day')
-      text.gsub!(/\bzítra\b/, 'next day') # czech
       text.gsub!(/\bzitra\b/, 'next day') # czech
+      text.gsub!(/\bzitrek\b/, 'next day') # czech
+      text.gsub!(/\bpondeli\b/, 'monday') # czech
+      text.gsub!(/\bpondelky\b/, 'monday') # czech
+      text.gsub!(/\butery\b/, 'tuesday') # czech
+      text.gsub!(/\buterek\b/, 'tuesday') # czech
+      text.gsub!(/\buterky\b/, 'tuesday') # czech
+      text.gsub!(/\bstreda\b/, 'wednesday') # czech
+      text.gsub!(/\bstredu\b/, 'wednesday') # czech
+      text.gsub!(/\bstredy\b/, 'wednesday') # czech
+      text.gsub!(/\bctvrtek\b/, 'thursday') # czech
+      text.gsub!(/\bctvrtky\b/, 'thursday') # czech
+      text.gsub!(/\bpatek\b/, 'friday') # czech
+      text.gsub!(/\bpatky\b/, 'friday') # czech
+      text.gsub!(/\bsobota\b/, 'saturday') # czech
+      text.gsub!(/\bsobotu\b/, 'saturday') # czech
+      text.gsub!(/\bsoboty\b/, 'saturday') # czech
+      text.gsub!(/\bnedele\b/, 'sunday') # czech
+      text.gsub!(/\bnedeli\b/, 'sunday') # czech
       text.gsub!(/\byesterday\b/, 'last day')
       text.gsub!(/\bnoon|midday\b/, '12:00pm')
       text.gsub!(/\bmidnight\b/, '24:00')

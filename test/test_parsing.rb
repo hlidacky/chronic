@@ -758,6 +758,29 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 17, 12), time
 
     # day name
+    time = parse_now("pondělí")
+    assert_equal Time.local(2006, 8, 21, 12), time
+
+    time = parse_now("úterý")
+    assert_equal Time.local(2006, 8, 22, 12), time
+
+    time = parse_now("středa")
+    assert_equal Time.local(2006, 8, 23, 12), time
+
+    time = parse_now("čtvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("ctvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("ctvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("pátek")
+    assert_equal Time.local(2006, 8, 18, 12), time
+
+    time = parse_now("soboty")
+    assert_equal Time.local(2006, 8, 19, 12), time
 
     time = parse_now("this tuesday")
     assert_equal Time.local(2006, 8, 22, 12), time
