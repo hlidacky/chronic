@@ -348,6 +348,19 @@ class TestParsing < TestCase
     time = parse_now("9.8.2013")
     assert_equal Time.local(2013, 8, 9, 12), time
 
+    time = parse_now("9.8.", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2007, 8, 9, 12), time
+
+    time = parse_now("inside some 9.8. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2007, 8, 9, 12), time
+
+    time = parse_now("inside some 10.11. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2006, 11, 10, 12), time
+
+    time = parse_now("inside some 24.12. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2006, 12, 24, 12), time
+
+
     time = parse_now("09.08.13")
     assert_equal Time.local(2013, 8, 9, 12), time
 

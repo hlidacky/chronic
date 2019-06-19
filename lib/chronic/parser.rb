@@ -98,6 +98,7 @@ module Chronic
       text.gsub!(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/, '\3 / \2 / \1')
       # added from https://github.com/mojombo/chronic/pull/356/files
       text.gsub!(/\b(\d{1,2})\.(\d{1,2})\.(\d{2})\b/, '\2 / \1 / \3')
+      text.gsub!(/\b(\d{1,2})\.(\d{1,2})\./, '\1/\2')
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
       text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d+)\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
       text.gsub!(/\./, ':')
