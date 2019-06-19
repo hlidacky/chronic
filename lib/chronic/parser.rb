@@ -1,5 +1,6 @@
 require 'chronic/dictionary'
 require 'chronic/handlers'
+require 'active_support/inflector'
 
 module Chronic
   class Parser
@@ -95,6 +96,9 @@ module Chronic
     def pre_normalize(text)
       text = text.to_s.downcase
       text.gsub!(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/, '\3 / \2 / \1')
+      # added from https://github.com/mojombo/chronic/pull/356/files
+      text.gsub!(/\b(\d{1,2})\.(\d{1,2})\.(\d{2})\b/, '\2 / \1 / \3')
+      text.gsub!(/\b(\d{1,2})\.(\d{1,2})\./, '\1/\2')
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
       text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d+)\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
       text.gsub!(/\./, ':')
@@ -108,6 +112,10 @@ module Chronic
           number
         end
       end
+      text = ::ActiveSupport::Inflector.transliterate(text) # remove accents
+      text.gsub!("."," ") # original chronic would not recognize "Booking on Friday?"
+      text.gsub!("?"," ") # original chronic would not recognize "Booking on Friday?"
+      text.gsub!("!"," ") # original chronic would not recognize "Booking on Friday?"
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
@@ -120,7 +128,29 @@ module Chronic
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
       text.gsub!(/\btoday\b/, 'this day')
+      text.gsub!(/\bdnes\b/, 'this day') # czech
+      text.gsub!(/\bdneska\b/, 'this day') # czech
+      text.gsub!(/\bdnesek\b/, 'this day') # czech
       text.gsub!(/\btomm?orr?ow\b/, 'next day')
+      text.gsub!(/\bzitra\b/, 'next day') # czech
+      text.gsub!(/\bzitrek\b/, 'next day') # czech
+      text.gsub!(/\bpondeli\b/, 'monday') # czech
+      text.gsub!(/\bpondelky\b/, 'monday') # czech
+      text.gsub!(/\butery\b/, 'tuesday') # czech
+      text.gsub!(/\buterek\b/, 'tuesday') # czech
+      text.gsub!(/\buterky\b/, 'tuesday') # czech
+      text.gsub!(/\bstreda\b/, 'wednesday') # czech
+      text.gsub!(/\bstredu\b/, 'wednesday') # czech
+      text.gsub!(/\bstredy\b/, 'wednesday') # czech
+      text.gsub!(/\bctvrtek\b/, 'thursday') # czech
+      text.gsub!(/\bctvrtky\b/, 'thursday') # czech
+      text.gsub!(/\bpatek\b/, 'friday') # czech
+      text.gsub!(/\bpatky\b/, 'friday') # czech
+      text.gsub!(/\bsobota\b/, 'saturday') # czech
+      text.gsub!(/\bsobotu\b/, 'saturday') # czech
+      text.gsub!(/\bsoboty\b/, 'saturday') # czech
+      text.gsub!(/\bnedele\b/, 'sunday') # czech
+      text.gsub!(/\bnedeli\b/, 'sunday') # czech
       text.gsub!(/\byesterday\b/, 'last day')
       text.gsub!(/\bnoon|midday\b/, '12:00pm')
       text.gsub!(/\bmidnight\b/, '24:00')

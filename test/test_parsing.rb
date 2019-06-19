@@ -348,6 +348,26 @@ class TestParsing < TestCase
     time = parse_now("9.8.2013")
     assert_equal Time.local(2013, 8, 9, 12), time
 
+    time = parse_now("9.8.", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2007, 8, 9, 12), time
+
+    time = parse_now("inside some 9.8. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2007, 8, 9, 12), time
+
+    time = parse_now("inside some 10.11. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2006, 11, 10, 12), time
+
+    time = parse_now("inside some 24.12. text", :endian_precedence => [:little, :middle])
+    assert_equal Time.local(2006, 12, 24, 12), time
+
+
+    time = parse_now("09.08.13")
+    assert_equal Time.local(2013, 8, 9, 12), time
+
+    time = parse_now("9.8.13")
+    assert_equal Time.local(2013, 8, 9, 12), time
+
+
     time = parse_now("30-07-2013 21:53:49")
     assert_equal Time.local(2013, 7, 30, 21, 53, 49), time
   end
@@ -725,6 +745,21 @@ class TestParsing < TestCase
     time = parse_now("today")
     assert_equal Time.local(2006, 8, 16, 19), time
 
+    time = parse_now("dnes")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("dnešek")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("dneska")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("zítra")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("zitra")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
     time = parse_now("yesterday")
     assert_equal Time.local(2006, 8, 15, 12), time
 
@@ -736,6 +771,32 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 17, 12), time
 
     # day name
+    time = parse_now("pondělí")
+    assert_equal Time.local(2006, 8, 21, 12), time
+
+    time = parse_now("úterý")
+    assert_equal Time.local(2006, 8, 22, 12), time
+
+    time = parse_now("středa")
+    assert_equal Time.local(2006, 8, 23, 12), time
+
+    time = parse_now("čtvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("ctvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("ctvrtek")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("pátek")
+    assert_equal Time.local(2006, 8, 18, 12), time
+
+    time = parse_now("Měla bys čas na hlídání v pátek?")
+    assert_equal Time.local(2006, 8, 18, 12), time
+
+    time = parse_now("soboty")
+    assert_equal Time.local(2006, 8, 19, 12), time
 
     time = parse_now("this tuesday")
     assert_equal Time.local(2006, 8, 22, 12), time
