@@ -779,6 +779,9 @@ class TestParsing < TestCase
     time = parse_now("pátek")
     assert_equal Time.local(2006, 8, 18, 12), time
 
+    time = parse_now("Měla bys čas na hlídání v pátek?")
+    assert_equal Time.local(2006, 8, 18, 12), time
+
     time = parse_now("soboty")
     assert_equal Time.local(2006, 8, 19, 12), time
 

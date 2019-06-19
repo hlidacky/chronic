@@ -112,6 +112,9 @@ module Chronic
         end
       end
       text = ::ActiveSupport::Inflector.transliterate(text) # remove accents
+      text.gsub!("."," ") # original chronic would not recognize "Booking on Friday?"
+      text.gsub!("?"," ") # original chronic would not recognize "Booking on Friday?"
+      text.gsub!("!"," ") # original chronic would not recognize "Booking on Friday?"
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
